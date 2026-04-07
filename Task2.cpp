@@ -7,11 +7,8 @@ using namespace std;
 
 int main()
 {
-    int n;
-    cin >> n;
-
-    deque<int> d(n);
-    copy_n(istream_iterator<int>(cin), n, d.begin());
+    deque<int> d{istream_iterator<int>(cin), istream_iterator<int>()};
+    const deque<int>::size_type n = d.size();
 
     auto mid = next(d.begin(), n / 2);
 
