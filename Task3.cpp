@@ -3,6 +3,8 @@
 #include <iostream>
 #include <iterator>
 #include <map>
+#include <sstream>
+#include <string>
 #include <utility>
 #include <vector>
 
@@ -10,20 +12,32 @@ using namespace std;
 
 int main()
 {
-    int n1, n2;
-    cout << "Enter the number of elements in vector V1: ";
-    cin >> n1;
+    cout << "Enter the elements of vector V1 on the first non-empty line." << '\n';
+    cout << "Enter the elements of vector V2 in the remaining input." << '\n';
 
-    vector<int> v1(n1);
-    cout << "Enter the elements of vector V1: ";
-    copy_n(istream_iterator<int>(cin), n1, v1.begin());
+    vector<string> lines;
+    string line;
+    while (getline(cin, line))
+        if (!line.empty())
+            lines.push_back(line);
 
-    cout << "Enter the number of elements in vector V2: ";
-    cin >> n2;
+    string line1;
+    string line2;
+    if (!lines.empty())
+        line1 = lines[0];
 
-    vector<int> v2(n2);
-    cout << "Enter the elements of vector V2: ";
-    copy_n(istream_iterator<int>(cin), n2, v2.begin());
+    for (vector<string>::size_type i = 1; i < lines.size(); ++i)
+    {
+        if (!line2.empty())
+            line2 += ' ';
+        line2 += lines[i];
+    }
+
+    istringstream in1(line1);
+    vector<int> v1{istream_iterator<int>(in1), istream_iterator<int>()};
+
+    istringstream in2(line2);
+    vector<int> v2{istream_iterator<int>(in2), istream_iterator<int>()};
 
     map<int, vector<int>> m;
     for (vector<int>::const_iterator it = v2.begin(); it != v2.end(); ++it)
