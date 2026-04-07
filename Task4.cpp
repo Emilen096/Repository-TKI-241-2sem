@@ -17,13 +17,8 @@ struct less_abs : function<bool(int, int)>
 
 int main()
 {
-    int n;
-    cout << "Enter the number of elements in vector V: ";
-    cin >> n;
-
-    vector<int> v(n);
     cout << "Enter the elements of vector V: ";
-    copy_n(istream_iterator<int>(cin), n, v.begin());
+    vector<int> v{istream_iterator<int>(cin), istream_iterator<int>()};
 
     sort(v.begin(), v.end(), less_abs());
 
