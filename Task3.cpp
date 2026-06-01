@@ -15,47 +15,39 @@ int main()
     cout << "Enter the elements of vector V1 on the first non-empty line." << '\n';
     cout << "Enter the elements of vector V2 in the remaining input." << '\n';
 
-    vector<string> lines;
-    string line;
-    while (getline(cin, line))
-        if (!line.empty())
-            lines.push_back(line);
-
+    // 1. Читаем первую строку, из неё — V1 (через итераторы)
     string line1;
-    string line2;
-    if (!lines.empty())
-        line1 = lines[0];
-
-    for (vector<string>::size_type i = 1; i < lines.size(); ++i)
-    {
-        if (!line2.empty())
-            line2 += ' ';
-        line2 += lines[i];
-    }
-
+    getline(cin, line1);
     istringstream in1(line1);
     vector<int> v1{istream_iterator<int>(in1), istream_iterator<int>()};
 
-    istringstream in2(line2);
-    vector<int> v2{istream_iterator<int>(in2), istream_iterator<int>()};
+    // 2. Все оставшиеся числа из cin читаем сразу в V2 через итераторы
+    //    (пробелы, переводы строк игнорируются — это и есть "the remaining input")
+    vector<int> v2{istream_iterator<int>(cin), istream_iterator<int>()};
 
+    // 3. Группировка V2 по последней цифре
     map<int, vector<int>> m;
-    for (vector<int>::const_iterator it = v2.begin(); it != v2.end(); ++it)
-        m[abs(*it % 10)].push_back(*it);
-
-    vector<pair<int, int>> v;
-    for (vector<int>::const_iterator it1 = v1.begin(); it1 != v1.end(); ++it1)
+    for (auto it = v2.begin(); it != v2.end(); ++it)
     {
-        map<int, vector<int>>::const_iterator it = m.find(abs(*it1 % 10));
+        int last_digit = abs(*it) % 10;          // правильное вычисление последней цифры
+        m[last_digit].push_back(*it);
+    }
+
+    // 4. Внутреннее объединение
+    vector<pair<int, int>> v;
+    for (auto it1 = v1.begin(); it1 != v1.end(); ++it1)
+    {
+        auto it = m.find(abs(*it1) % 10);        // ищем ключ в отображении M
         if (it == m.end())
             continue;
 
-        for (vector<int>::const_iterator it2 = it->second.begin(); it2 != it->second.end(); ++it2)
+        for (auto it2 = it->second.begin(); it2 != it->second.end(); ++it2)
             v.push_back(make_pair(*it1, *it2));
     }
 
+    // 5. Вывод результата
     cout << v.size() << '\n';
-    for (vector<pair<int, int>>::const_iterator it = v.begin(); it != v.end(); ++it)
+    for (auto it = v.begin(); it != v.end(); ++it)
         cout << it->first << ' ' << it->second << '\n';
 
     return 0;
