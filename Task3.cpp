@@ -29,7 +29,7 @@ int main()
     map<int, vector<int>> m;
     for (auto it = v2.begin(); it != v2.end(); ++it)
     {
-        int last_digit = abs(*it) % 10;          // правильное вычисление последней цифры
+        int last_digit = abs(*it) % 10;          
         m[last_digit].push_back(*it);
     }
 
@@ -37,7 +37,7 @@ int main()
     vector<pair<int, int>> v;
     for (auto it1 = v1.begin(); it1 != v1.end(); ++it1)
     {
-        auto it = m.find(abs(*it1) % 10);        // ищем ключ в отображении M
+        auto it = m.find(abs(*it1) % 10);        
         if (it == m.end())
             continue;
 
